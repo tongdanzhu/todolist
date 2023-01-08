@@ -1,31 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<%- include("header") -%>
 
-<head>
-  <meta charset="utf-8">
-  <title></title>
-</head>
-
-<body>
+  <div class="box" id="heading">
+    <h1><%= day %></h1>
+  </div>
 
 
-  <h1><%= day %></h1>
-  <ul>
-    <li>Daily Module</li>
-    <li>Get up early</li>
-
+  <div class="box">
     <% for(var i = 0; i < items.length; i++){ %>
-      <li><%= items[i] %></li>
+      <div class="item">
+        <input type="checkbox">
+        <p><%= items[i] %></p>
+      </div>
     <% } %>
 
-  </ul>
+    <form class="item" action="/" method="post">
+      <input type="text" name="newTask" placeholder="Add new task" autocomplete="off">
+      <button type="submit" name="button" value = <%= day %> >+</button>
+    </form>
 
-  <form class="" action="/" method="post">
-    <input type="text" name="newTask" placeholder="add new task">
-    <button type="submit" name="button">Add</button>
-  </form>
+  </div>
 
-
-</body>
-
-</html>
+<%- include("footer") -%>

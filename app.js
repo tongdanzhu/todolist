@@ -1,10 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const date = require(__dirname + "/date.js"); // require local module
 
 const app = express();
+const items = ["Daily module", "Get up early"]; // array to store all input tasks
+const workList = [];
 
-var items = []; // array to store all input tasks
-
+// tell js to use static css
+app.use(express.static("public"));
 // Using Body parser
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -16,25 +19,36 @@ app.listen(3000, function(){
 });
 
 app.get("/", function(req, res){
-
-  // Formating Date info
-  var today = new Date();
-  var options = {
-    weekday: "long",
-    day: "numeric",
-    month: "long"
-  };
-  var day = today.toLocaleDateString("en-US", options);
-  res.render("list", {day: day, items: items});
-
+  let day = date.getDate();
+  res.render("list", {day: day,  items: items});
 });
 
 // Handle form post request
 app.post("/", function(req, res){
-  console.log(req.body.newTask);
 
-  var item = req.body.newTask;
-  items.push(item); // append new task into items array
+  console.log(req.body);
 
-  res.redirect("/"); // redirect to home route
+  let item = req.body.newTask;
+
+  if (req.body.button === "Work"){
+    if (item != ""){
+      workList.push(item);
+    }
+    res.redirect("/work");
+  }
+  else{
+    if (item != ""){
+      items.push(item); // append new task into items array
+    }
+    res.redirect("/"); // redirect to home route
+  }
+
 })
+
+app.get("/work", function(req, res){
+  res.render("list", {day: "Work list", items: workList});
+});
+
+app.get("/about", function(req, res){
+  res.render("about");
+});
